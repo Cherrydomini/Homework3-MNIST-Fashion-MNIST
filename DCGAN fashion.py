@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import tensorflow as tf
-
+import cv2
 
 import glob
 import imageio
@@ -14,7 +14,7 @@ import time
 
 from IPython import display
 
-(train_images, train_labels), (_, _) = tf.keras.datasets.mnist.load_data()
+(train_images, train_labels), (_, _) = tf.keras.datasets.fashion_mnist.load_data()
 
 train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float32')
 train_images = (train_images - 127.5) / 127.5 # Normalize the images to [-1, 1]
@@ -103,7 +103,7 @@ checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
                                  discriminator=discriminator)
 
 #DEFINE THE TRAINING LOOP
-EPOCHS = 5
+EPOCHS = 60
 noise_dim  =100
 num_examples_to_generate = 16
 
@@ -203,6 +203,7 @@ with imageio.get_writer(anim_file, mode='I') as writer:
 import IPython
 if IPython.version_info > (6,2,0,''):
   display.Image(filename=anim_file)
+  cv2.waitkey(300)
 
 try:
   from google.colab import files
